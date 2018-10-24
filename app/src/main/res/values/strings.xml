@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Stock Monitor</string>
+    <string name="my_stock">My Stock:</string>
+    <string name="details">Details</string>
+    <string name="back">Back</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="default_stock">Facebook</string>
+    <string name="purchased_string">Purchased at </string>
+    <string name="details_name">Name:</string>
+    <string name="details_price">Price:</string>
+    <string name="details_num_of_stock">#Stocks:</string>
+    <string name="details_sector">Sector:</string>
+    <string name="sector_tech">Technology</string>
+    <string name="sector_health">Health Care</string>
+    <string name="sector_bas_mat">Basic Materials</string>
+    <string name="default_price">99.9</string>
+    <string name="default_stock_num">43</string>
+    <string name="default_stock_sector_number">0</string>
+    <string name="back_string">Back</string>
+    <string name="cancelled_string">Cancel</string>
+    <string name="save_string">Saved</string>
+    <string name="required_string">is required!</string>
+    <string name="company_name_string">Company name</string>
+    <string name="price_string">Price</string>
+    <string name="stock_num_string">Number of stocks</string>
+</resources>

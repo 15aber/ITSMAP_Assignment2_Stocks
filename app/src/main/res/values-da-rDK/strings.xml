@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Stock Monitor</string>
+    <string name="my_stock">Mine aktier:</string>
+    <string name="details">Detaljer</string>
+    <string name="back">Tilbage</string>
+    <string name="edit">Redigér</string>
+    <string name="cancel">Annullér</string>
+    <string name="save">Gem</string>
+    <string name="default_stock">Facebook</string>
+    <string name="purchased_string">Købt for</string>
+    <string name="details_name">Navn:</string>
+    <string name="details_price">Pris:</string>
+    <string name="details_num_of_stock">#Aktier</string>
+    <string name="details_sector">Sektor</string>
+    <string name="sector_tech">Teknologi</string>
+    <string name="sector_bas_mat">Materialer</string>
+    <string name="default_price">99.9</string>
+    <string name="default_stock_num">43</string>
+    <string name="default_stock_sector_number">0</string>
+    <string name="sector_health">Sundhed</string>
+    <string name="back_string">Tilbage</string>
+    <string name="cancelled_string">Annullér</string>
+    <string name="save_string">Gemt</string>
+    <string name="required_string">er påkrævet!</string>
+    <string name="company_name_string">Virksomhedsnavn</string>
+    <string name="price_string">Pris</string>
+    <string name="stock_num_string">Antal aktier</string>
+</resources>
