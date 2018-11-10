@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/tv_add_stock_symbol"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginBottom="@dimen/big_padding"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/hint_stock_symbol"
+        android:inputType="text"
+        android:padding="@dimen/small_padding"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/tv_add_stock_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginBottom="@dimen/big_padding"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/hint_num_of_stocks"
+        android:inputType="numberSigned"
+        android:padding="@dimen/small_padding"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/button_background"
+        android:text="@string/save"
+        android:textColor="@color/buttonLabel" />
+
+</LinearLayout>

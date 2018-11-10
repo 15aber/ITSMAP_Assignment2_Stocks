@@ -26,4 +26,11 @@
     <string name="company_name_string">Virksomhedsnavn</string>
     <string name="price_string">Pris</string>
     <string name="stock_num_string">Antal aktier</string>
+    <string name="empty_not_saved">Aktie ikke gemt, da feltet er tomt</string>
+    <string name="hint_stock_symbol">Aktiesymbol...</string>
+    <string name="hint_num_of_stocks">Antal aktier</string>
+    <string name="add_new_stock">Tilføj ny aktie</string>
+    <string name="add">Tilføj</string>
+    <string name="hint_symbol">Symbol (aapl)</string>
+    <string name="aapl">AAPL</string>
 </resources>

@@ -7,5 +7,9 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorDarkGrey">#585858</color>
     <color name="background_material_light">#ffffff</color>
+    <color name="item_background">#666699</color>
+    <color name="button_background">#73477c</color>
+    <color name="buttonLabel">#d3d3d3</color>
+
 
 </resources>
