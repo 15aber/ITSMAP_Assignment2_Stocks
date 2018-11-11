@@ -1,16 +1,13 @@
 package com.example.tenna.stockmonitor;
 
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,15 +18,15 @@ import java.util.List;
 
 import static com.example.tenna.stockmonitor.Constants.BROADCAST__SERVICE_DATA_UPDATED;
 import static com.example.tenna.stockmonitor.Constants.CURRENT_BOOK;
-import static com.example.tenna.stockmonitor.Constants.STOCK_NAME;
+import static com.example.tenna.stockmonitor.Constants.NOT_SET_BEFORE_VALUE;
 import static com.example.tenna.stockmonitor.Constants.STOCK_NUM;
 import static com.example.tenna.stockmonitor.Constants.STOCK_PRICE;
-import static com.example.tenna.stockmonitor.Constants.STOCK_SECTOR;
 
 public class EditActivity extends AppCompatActivity {
 
     StockMonitorService mService;
     boolean mBound = false;
+    boolean notSetBefore = true;
 
     private int currentBookPosition;
     private Book currentBook;
@@ -60,21 +57,19 @@ public class EditActivity extends AppCompatActivity {
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
         if (savedInstanceState != null) {
-            stockName = savedInstanceState.getString(STOCK_NAME);
             purchasePrice = savedInstanceState.getDouble(STOCK_PRICE);
             numOfStock = savedInstanceState.getInt(STOCK_NUM);
-            stockSector = savedInstanceState.getString(STOCK_SECTOR);
-        } else {
-            final Intent data = getIntent();
-            currentBookPosition = data.getIntExtra(CURRENT_BOOK, 0);
-            setValues();
-            updateUI();
+            notSetBefore = savedInstanceState.getBoolean(NOT_SET_BEFORE_VALUE);
         }
+        final Intent data = getIntent();
+        currentBookPosition = data.getIntExtra(CURRENT_BOOK, 0);
+        setValues();
+        updateUI();
+
 
         //Subscribe to dataupdated broadcasts
         IntentFilter filter = new IntentFilter();
         filter.addAction(BROADCAST__SERVICE_DATA_UPDATED);
-        LocalBroadcastManager.getInstance(this).registerReceiver(onBackgroundServiceResult,filter);
     }
 
     private void setValues() {
@@ -82,9 +77,12 @@ public class EditActivity extends AppCompatActivity {
             allBooks = mService.getAllBooks();
             currentBook = allBooks.get(currentBookPosition);
             stockName = currentBook.getCompanyName();
-            numOfStock = currentBook.getNumOfStocks();
             stockSector = currentBook.getStockSector();
-            purchasePrice = currentBook.getPurchasePrice();
+            if (notSetBefore) {
+                purchasePrice = currentBook.getPurchasePrice();
+                numOfStock = currentBook.getNumOfStocks();
+                notSetBefore = false;
+            }
         }
     }
 
@@ -141,20 +139,6 @@ public class EditActivity extends AppCompatActivity {
         mService.saveBookChanges(currentBookPosition, purchasePrice, numOfStock);
     }
 
-    //define our broadcast receiver for (local) broadcasts.
-    // Registered and unregistered in onStart() and onStop() methods
-    private BroadcastReceiver onBackgroundServiceResult = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d("DetailsActivity", "Broadcast received from service");
-            //handleBackgroundResult(result);
-            if(mBound) {
-                setValues();
-                updateUI();
-            }
-        }
-    };
-
     /** Defines callbacks for service binding, passed to bindService() */
     private ServiceConnection mConnection = new ServiceConnection() {
 
@@ -180,5 +164,15 @@ public class EditActivity extends AppCompatActivity {
         super.onDestroy();
         unbindService(mConnection);
         mBound = false;
+    }
+
+    // Modified from: https://developer.android.com/guide/components/activities/activity-lifecycle.html
+    //Save inputs for configuration changes
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putDouble(STOCK_PRICE, Double.parseDouble(etStockPrice.getText().toString()));
+        outState.putInt(STOCK_NUM, Integer.parseInt(etStockNum.getText().toString()));
+        outState.putBoolean(NOT_SET_BEFORE_VALUE, notSetBefore);
+        super.onSaveInstanceState(outState);
     }
 }

@@ -137,7 +137,10 @@ public class DetailsActivity extends AppCompatActivity {
     /** Called when the user taps the Edit button */
     public void goToEdit(View view) {
         Intent intent = new Intent(this, EditActivity.class);
-        intent.putExtra(CURRENT_BOOK, currentBookPosition);
+        intent.putExtra(STOCK_NAME, stockName);
+        intent.putExtra(STOCK_PRICE, stockLatestPrice);
+        intent.putExtra(STOCK_NUM, numOfStock);
+        intent.putExtra(STOCK_SECTOR, stockSector);
         startActivityForResult(intent, EDIT_REQUEST);
     }
 
@@ -150,6 +153,7 @@ public class DetailsActivity extends AppCompatActivity {
         } else if (requestCode == EDIT_REQUEST && resultCode == RESULT_OK) {
             Toast.makeText(this, getText(R.string.save_string), Toast.LENGTH_SHORT).show();
             //to do get position
+
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
             finish();

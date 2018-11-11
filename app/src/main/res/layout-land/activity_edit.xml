@@ -122,7 +122,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.25" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextViewStockName"
         android:layout_width="173dp"
         android:layout_height="wrap_content"
@@ -171,38 +171,17 @@
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="@+id/textView19" />
 
-    <RadioGroup
+    <TextView
         android:id="@+id/textViewEditStockSector"
         android:layout_width="wrap_content"
         android:layout_height="96dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:checkedButton="@+id/radioButtonEditHealth"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/editTextEditStockNum">
 
-        <RadioButton
-            android:id="@+id/radioButtonEditTech"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/sector_tech" />
-
-        <RadioButton
-            android:id="@+id/radioButtonEditHealth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/sector_health" />
-
-        <RadioButton
-            android:id="@+id/radioButtonEditBM"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/sector_bas_mat" />
-    </RadioGroup>
+    </TextView>
 
 </android.support.constraint.ConstraintLayout>
