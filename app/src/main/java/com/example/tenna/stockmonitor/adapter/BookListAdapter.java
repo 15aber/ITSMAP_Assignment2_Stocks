@@ -29,7 +29,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
         TextView bookItemView;
         TextView tvListStockPrice;
         TextView tvListStockDiff;
-        public int position=0;
+        int position=0;
         LinearLayout listItem;
 
         private BookViewHolder(View itemView) {

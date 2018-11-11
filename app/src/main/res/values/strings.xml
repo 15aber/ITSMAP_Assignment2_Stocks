@@ -26,12 +26,15 @@
     <string name="price_string">Price</string>
     <string name="stock_num_string">Number of stocks</string>
     <string name="empty_not_saved">Stock not saved because it is empty.</string>
-    <string name="hint_stock_symbol">Stock symbol...</string>
-    <string name="hint_num_of_stocks">Number of stocks...</string>
+    <string name="hint_stock_symbol">Stock symbol…</string>
+    <string name="hint_num_of_stocks">Number of stocks…</string>
     <string name="add_new_stock">Add new stock</string>
     <string name="add">Add</string>
     <string name="hint_symbol">Symbol (aapl)</string>
     <string name="aapl">AAPL</string>
     <string name="clicked_item">Clicked item:</string>
     <string name="long_clicked_item">Long clicked item:</string>
+    <string name="primary_exchange">Primary Exchange:</string>
+    <string name="latest_timestamp">Latest Timestamp</string>
+    <string name="purchase_price">Purchase Price</string>
 </resources>

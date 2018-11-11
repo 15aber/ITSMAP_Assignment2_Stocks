@@ -42,7 +42,7 @@ public class StockMonitorService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        books = new ArrayList<Book>();
+        books = new ArrayList<>();
         books.add(new Book("TSLA", 4));
         books.add(new Book("FB", 4));
     }

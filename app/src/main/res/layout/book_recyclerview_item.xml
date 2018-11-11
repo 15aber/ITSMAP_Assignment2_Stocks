@@ -12,7 +12,6 @@
         android:layout_weight="1"
         android:background="@color/item_background"
         android:textColor="@color/colorWhite"
-        android:inputType="text"
         android:text="TextView" />
 
     <TextView

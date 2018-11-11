@@ -35,4 +35,7 @@
     <string name="aapl">AAPL</string>
     <string name="clicked_item">Clicked item:</string>
     <string name="long_clicked_item">Long clicked item:</string>
+    <string name="primary_exchange">Primary Exchange:</string>
+    <string name="latest_timestamp">Latest Timestamp</string>
+    <string name="purchase_price">Purchase Price</string>
 </resources>

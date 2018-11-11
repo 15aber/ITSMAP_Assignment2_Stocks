@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.tenna.stockmonitor.db.Book;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.example.tenna.stockmonitor.Constants.BROADCAST__SERVICE_DATA_UPDATED;
@@ -26,6 +28,7 @@ import static com.example.tenna.stockmonitor.Constants.STOCK_NAME;
 import static com.example.tenna.stockmonitor.Constants.STOCK_NUM;
 import static com.example.tenna.stockmonitor.Constants.STOCK_PRICE;
 import static com.example.tenna.stockmonitor.Constants.STOCK_SECTOR;
+import static java.lang.String.format;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -36,9 +39,14 @@ public class DetailsActivity extends AppCompatActivity {
     Book currentBook;
 
     private String stockName;
-    private double stockPrice;
+    private double stockLatestPrice;
     private int numOfStock;
     private String stockSector;
+    private String primaryExchange;
+    private Date lastestTimestamp;
+    private double purchasePrice;
+
+
     private int[] stockSectors = {
             R.string.sector_tech,
             R.string.sector_health,
@@ -49,6 +57,9 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView tvStockPrice;
     private TextView tvStockNum;
     private TextView tvStockSector;
+    private TextView tvPrimaryExchange;
+    private TextView tvLatestTimestamp;
+    private TextView tvPurchasePrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +73,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             stockName = savedInstanceState.getString(STOCK_NAME);
-            stockPrice = savedInstanceState.getDouble(STOCK_PRICE);
+            stockLatestPrice = savedInstanceState.getDouble(STOCK_PRICE);
             numOfStock = savedInstanceState.getInt(STOCK_NUM);
             stockSector = savedInstanceState.getString(STOCK_SECTOR);
         } else {
@@ -84,9 +95,12 @@ public class DetailsActivity extends AppCompatActivity {
             allBooks = mService.getAllBooks();
             currentBook = allBooks.get(currentBookPosition);
             stockName = currentBook.getCompanyName();
-            stockPrice = currentBook.getLatestValue();
+            stockLatestPrice = currentBook.getLatestValue();
             numOfStock = currentBook.getNumOfStocks();
             stockSector = currentBook.getStockSector();
+            primaryExchange = currentBook.getPrimaryExchange();
+            lastestTimestamp = currentBook.getLastestTimestamp();
+            purchasePrice = currentBook.getPurchasePrice();
         }
     }
 
@@ -96,11 +110,19 @@ public class DetailsActivity extends AppCompatActivity {
             tvStockName = findViewById(R.id.textViewDetailsName);
             tvStockName.setText(stockName);
             tvStockPrice = findViewById(R.id.textViewPrice);
-            tvStockPrice.setText(String.format("%.2f", stockPrice));
+            tvStockPrice.setText(format("%.2f", stockLatestPrice));
             tvStockNum = findViewById(R.id.textViewDetailsStockNum);
             tvStockNum.setText(String.valueOf(numOfStock));
             tvStockSector = findViewById(R.id.textViewDetailsStockSector);
             tvStockSector.setText(stockSector);
+            tvPrimaryExchange = findViewById(R.id.tv_primary_exchange);
+            tvPrimaryExchange.setText(primaryExchange);
+            tvLatestTimestamp = findViewById(R.id.tv_latest_timestamp);
+            tvLatestTimestamp.setText(DateFormat.format("yyyy.MM.dd", lastestTimestamp).toString());
+            tvPurchasePrice = findViewById(R.id.tv_purchase_price);
+            tvPurchasePrice.setText(format("%.2f", purchasePrice));
+
+
         } else {
             Log.i("DetailsActivity:", "Update UI: Data not ready.");
         }
@@ -116,7 +138,7 @@ public class DetailsActivity extends AppCompatActivity {
     public void goToEdit(View view) {
         Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra(STOCK_NAME, stockName);
-        intent.putExtra(STOCK_PRICE, stockPrice);
+        intent.putExtra(STOCK_PRICE, stockLatestPrice);
         intent.putExtra(STOCK_NUM, numOfStock);
         intent.putExtra(STOCK_SECTOR, stockSector);
         startActivityForResult(intent, EDIT_REQUEST);
@@ -131,13 +153,13 @@ public class DetailsActivity extends AppCompatActivity {
         } else if (requestCode == EDIT_REQUEST && resultCode == RESULT_OK) {
             Toast.makeText(this, getText(R.string.save_string), Toast.LENGTH_SHORT).show();
             stockName = data.getStringExtra(STOCK_NAME);
-            stockPrice = data.getDoubleExtra(STOCK_PRICE, 0);
+            stockLatestPrice = data.getDoubleExtra(STOCK_PRICE, 0);
             numOfStock = data.getIntExtra(STOCK_NUM, 0);
             stockSector = data.getStringExtra(STOCK_SECTOR);
 
             Intent intent = new Intent();
             intent.putExtra(STOCK_NAME, stockName);
-            intent.putExtra(STOCK_PRICE, stockPrice);
+            intent.putExtra(STOCK_PRICE, stockLatestPrice);
             intent.putExtra(STOCK_NUM, numOfStock);
             intent.putExtra(STOCK_SECTOR, stockSector);
             setResult(RESULT_OK, intent);
@@ -149,7 +171,7 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         // Modified from: https://developer.android.com/guide/components/activities/activity-lifecycle.html
         outState.putString(STOCK_NAME, stockName);
-        outState.putDouble(STOCK_PRICE, stockPrice);
+        outState.putDouble(STOCK_PRICE, stockLatestPrice);
         outState.putInt(STOCK_NUM, numOfStock);
         outState.putString(STOCK_SECTOR, stockSector);
         super.onSaveInstanceState(outState);
@@ -162,7 +184,7 @@ public class DetailsActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.d("DetailsActivity", "Broadcast received from service");
             //handleBackgroundResult(result);
-            if(mBound == true) {
+            if(mBound) {
                 setValues();
                 updateUI();
             }

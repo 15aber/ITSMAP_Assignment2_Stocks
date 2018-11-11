@@ -72,13 +72,11 @@ public class OverviewActivity extends AppCompatActivity {
         stockRecyclerView.setAdapter(adapter);
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        allBooks = new ArrayList<Book>();
-        Book book = new Book("aapl", 220);
-        allBooks.add(book);
+        allBooks = new ArrayList<>();
 
         adapter.setBooks(allBooks);
 
-        addButton = (ImageButton) findViewById(R.id.AddButton);
+        addButton = findViewById(R.id.AddButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

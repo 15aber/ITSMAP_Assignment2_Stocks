@@ -35,4 +35,7 @@
     <string name="aapl">AAPL</string>
     <string name="clicked_item">"Valgte Aktie: "</string>
     <string name="long_clicked_item">Valgte Aktie (langt tryk):</string>
+    <string name="primary_exchange">"Primær Børs: "</string>
+    <string name="latest_timestamp">"Seneste Tidsstempel: "</string>
+    <string name="purchase_price">"Købt for: "</string>
 </resources>
