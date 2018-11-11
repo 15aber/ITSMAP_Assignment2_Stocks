@@ -42,6 +42,7 @@ public class OverviewActivity extends AppCompatActivity {
 
     private BookListAdapter adapter;
     ImageButton addButton;
+    ImageButton refreshButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,16 @@ public class OverviewActivity extends AppCompatActivity {
                 //addNewBook();
                 Intent intent = new Intent(getApplicationContext(), AddStockActivity.class);
                 startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
+        refreshButton = findViewById(R.id.refreshButton);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mBound) {
+                    mService.updateAllBooks();
+                }
             }
         });
 
