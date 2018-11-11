@@ -33,6 +33,7 @@ import static com.example.tenna.stockmonitor.Constants.NOTIFY_ID;
 public class StockMonitorService extends Service {
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();
+    private AsyncUpdateTask asyncUpdateTask;
     private boolean started = false;
     private ArrayList<Book> books;
 
@@ -43,25 +44,24 @@ public class StockMonitorService extends Service {
     public void onCreate() {
         super.onCreate();
         books = new ArrayList<>();
-        books.add(new Book("TSLA", 4));
-        books.add(new Book("FB", 4));
+        addBook("TSLA", 4);
+        addBook("FB", 4);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //in this case we only start the background running loop once
+        //Only start the background loop once
         if(!started && intent!=null) {
 
             startServiceWithNotification();
 
-            //do background thing
-            doBackgroundThing();
+            asyncUpdateTask = new AsyncUpdateTask();
+            asyncUpdateTask.execute();
 
         } else {
             Log.d("LOG", "Background service onStartCommand - already started!");
         }
         return START_STICKY;
-        //return super.onStartCommand(intent, flags, startId);
     }
 
     /**
@@ -157,85 +157,72 @@ public class StockMonitorService extends Service {
         startForeground(NOTIFY_ID, notification);
     }
 
-    //Code inspired by ServicesDemo from lecture
-    private void doBackgroundThing() {
-        //create asynch tasks that updates books with newest data and sends broadcast every 5 minutes
-        AsyncTask<Object, Object, String> task = new AsyncTask<Object, Object, String>() {
+    //AsyncTask to execute in background every 2 minutes
+    public class AsyncUpdateTask extends AsyncTask<String,String,String> {
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected String doInBackground(Object[] params) {
-                String s = "Background job";
-
-                for (final Book book: books) {
-
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                            Request.Method.GET, buildURL(book.getSymbol()), null,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject jsonObject) {
-                                    Log.i("JSON", "JSON: " + jsonObject);
-
-                                    try {
-                                        String companyName = jsonObject.getString("companyName");
-                                        book.setCompanyName(companyName);
-                                        String primaryExchange = jsonObject.getString("primaryExchange");
-                                        book.setPrimaryExchange(primaryExchange);
-                                        double latestValue = Double.parseDouble(jsonObject.getString("latestPrice"));
-                                        book.setLatestValue(latestValue);
-                                        Date latestTimestamp = new Date(Long.parseLong(jsonObject.getString("latestUpdate")));
-                                        book.setLastestTimestamp(latestTimestamp);
-                                        String stockSector = jsonObject.getString("sector");
-                                        book.setStockSector(stockSector);
-
-                                        Log.i("Service", "Updated book: " + book);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            },
-
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.i("Error", "Something went wrong " + error);
-                                }
-                            }
-                    );
-                    MySingleton.getInstance(StockMonitorService.this).addToRequestQueue(jsonObjectRequest);
-                }
-
+        @Override
+        protected String doInBackground(String... strings) {
+            while(started){
+                Log.d("Service:","AsyncUpdateTask entered");
                 try {
-                    Log.d("LOG", "Task started");
-                    Thread.sleep(2000);
-                    Log.d("LOG", "Task completed");
-                } catch (Exception e) {
-                    s+= " did not finish due to error";
-                    //e.printStackTrace();
-                    return s;
-                }
-                s += " completed after " + 2000 + "ms";
-                return s;
-            }
-
-            @Override
-            protected void onPostExecute(String stringResult) {
-                super.onPostExecute(stringResult);
-                broadcastTaskResult(stringResult);
-
-                //if Service is still running, keep doing this recursively
-                if(started){
-                    doBackgroundThing();
+                    //Use Volley to update data from online API
+                    updateAllBooks();
+                    Thread.sleep(120000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        };
-        //start task
-        task.execute();
+            return null;
+        }
     }
+
+    public void updateAllBooks() {
+        Log.i("Service: ", "Updating all books.");
+        for (final Book book: books) {
+            //update each book
+            updateSingleBook(book);
+        }
+    }
+
+    public void updateSingleBook(final Book book) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET, buildURL(book.getSymbol()), null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+                        Log.i("JSON", "JSON: " + jsonObject);
+
+                        try {
+                            String companyName = jsonObject.getString("companyName");
+                            book.setCompanyName(companyName);
+                            String primaryExchange = jsonObject.getString("primaryExchange");
+                            book.setPrimaryExchange(primaryExchange);
+                            double latestValue = Double.parseDouble(jsonObject.getString("latestPrice"));
+                            book.setLatestValue(latestValue);
+                            Date latestTimestamp = new Date(Long.parseLong(jsonObject.getString("latestUpdate")));
+                            book.setLastestTimestamp(latestTimestamp);
+                            String stockSector = jsonObject.getString("sector");
+                            book.setStockSector(stockSector);
+
+                            Log.i("Service", "Updated book: " + book);
+                            broadcastTaskResult("Book updated");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Service", "Error occurred: " + error);
+                    }
+                }
+        );
+        MySingleton.getInstance(StockMonitorService.this).addToRequestQueue(jsonObjectRequest);
+    }
+
+
 
     String buildURL(String symbol) {
         return "https://api.iextrading.com/1.0/stock/" + symbol + "/quote";
