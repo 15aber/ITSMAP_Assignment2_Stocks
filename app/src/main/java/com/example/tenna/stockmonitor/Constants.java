@@ -1,6 +1,7 @@
 package com.example.tenna.stockmonitor;
 
 public interface Constants {
+    public static final String CURRENT_BOOK = "com.example.Assignment1.CURRENT_BOOK";;
     public static final String STOCK_NAME = "com.example.Assignment1.STOCK_NAME";
     public static final String STOCK_PRICE = "com.example.Assignment1.STOCK_PRICE";
     public static final String STOCK_NUM = "com.example.Assignment1.STOCK_NUM";

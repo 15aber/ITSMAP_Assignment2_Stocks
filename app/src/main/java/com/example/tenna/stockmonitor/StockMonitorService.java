@@ -101,6 +101,7 @@ public class StockMonitorService extends Service {
                             book.setPrimaryExchange(primaryExchange);
                             double latestValue = Double.parseDouble(jsonObject.getString("latestPrice"));
                             book.setLatestValue(latestValue);
+                            book.setPurchasePrice(latestValue); //set purchase price
                             Date latestTimestamp = new Date(Long.parseLong(jsonObject.getString("latestUpdate")));
                             book.setLastestTimestamp(latestTimestamp);
                             String stockSector = jsonObject.getString("sector");

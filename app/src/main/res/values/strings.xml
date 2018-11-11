@@ -32,4 +32,6 @@
     <string name="add">Add</string>
     <string name="hint_symbol">Symbol (aapl)</string>
     <string name="aapl">AAPL</string>
+    <string name="clicked_item">Clicked item:</string>
+    <string name="long_clicked_item">Long clicked item:</string>
 </resources>

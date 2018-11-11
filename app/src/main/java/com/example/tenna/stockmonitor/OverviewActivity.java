@@ -24,10 +24,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.tenna.stockmonitor.Constants.BROADCAST__SERVICE_DATA_UPDATED;
+import static com.example.tenna.stockmonitor.Constants.CURRENT_BOOK;
+import static com.example.tenna.stockmonitor.Constants.DETAILS_REQUEST;
+import static com.example.tenna.stockmonitor.Constants.STOCK_NAME;
+import static com.example.tenna.stockmonitor.Constants.STOCK_NUM;
+import static com.example.tenna.stockmonitor.Constants.STOCK_PRICE;
+import static com.example.tenna.stockmonitor.Constants.STOCK_SECTOR;
 
 public class OverviewActivity extends AppCompatActivity {
 
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
+
 
     StockMonitorService mService;
     boolean mBound = false;
@@ -45,6 +52,23 @@ public class OverviewActivity extends AppCompatActivity {
 
         RecyclerView stockRecyclerView = findViewById(R.id.stock_recyclerview);
         adapter = new BookListAdapter(this);
+
+        //recyclerview onclicklistener inspired by http://android.mskurt.net/2015/12/28/handling-item-clicks-on-recyclerview/
+        //Create custom interface object and send it to adapter
+        //Adapter trigger it when any item view is clicked
+        adapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(OverviewActivity.this, getString(R.string.clicked_item) + allBooks.get(position).getCompanyName(), Toast.LENGTH_SHORT).show();
+                goToDetails(position);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                Toast.makeText(OverviewActivity.this, getString(R.string.long_clicked_item) + allBooks.get(position).getCompanyName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         stockRecyclerView.setAdapter(adapter);
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -63,6 +87,17 @@ public class OverviewActivity extends AppCompatActivity {
                 startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
             }
         });
+
+
+    }
+
+
+    /** Called when the user taps an item on the recyclerview */
+    public void goToDetails(int position) {
+        // Modified from: https://developer.android.com/guide/components/activities/intro-activities.html
+        Intent intent = new Intent(OverviewActivity.this, DetailsActivity.class);
+        intent.putExtra(CURRENT_BOOK, position);
+        startActivityForResult(intent, DETAILS_REQUEST);
     }
 
     @Override
@@ -130,6 +165,13 @@ public class OverviewActivity extends AppCompatActivity {
                     getApplicationContext(),
                     R.string.empty_not_saved,
                     Toast.LENGTH_LONG).show();
+        }
+
+        if (requestCode == DETAILS_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                allBooks = mService.getAllBooks();
+                adapter.setBooks(allBooks);
+            }
         }
     }
 

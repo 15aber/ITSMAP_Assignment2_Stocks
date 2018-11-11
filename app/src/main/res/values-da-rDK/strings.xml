@@ -33,4 +33,6 @@
     <string name="add">Tilføj</string>
     <string name="hint_symbol">Symbol (aapl)</string>
     <string name="aapl">AAPL</string>
+    <string name="clicked_item">"Valgte Aktie: "</string>
+    <string name="long_clicked_item">Valgte Aktie (langt tryk):</string>
 </resources>

@@ -6,6 +6,8 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.util.Date;
 
 @Entity(tableName = "book_table")
@@ -122,5 +124,12 @@ public class Book {
 
     public void setPurchasePrice(double purchasePrice) {
         this.purchasePrice = purchasePrice;
+    }
+
+    //Code modified from https://stackoverflow.com/questions/739192/java-method-finding-object-in-array-list-given-a-known-attribute-value
+    //compare Books on id
+    public boolean equals(Book obj) {
+        EqualsBuilder builder = new EqualsBuilder().append(this.getId(), obj.getId());
+        return builder.isEquals();
     }
 }
