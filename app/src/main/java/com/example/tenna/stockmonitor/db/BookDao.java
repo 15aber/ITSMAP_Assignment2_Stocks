@@ -9,6 +9,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -23,7 +24,7 @@ public interface BookDao {
 
     //get all books
     @Query("SELECT * from book_table ORDER BY company_name ASC")
-    LiveData<List<Book>> getAllBooks();
+    List<Book> getAllBooks();
 
     //get book by id
     @Query("select * from book_table where symbol = :symbol")

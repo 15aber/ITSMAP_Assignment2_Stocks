@@ -46,9 +46,6 @@ public class Book {
         this.numOfStocks = numOfStocks;
     }
 
-    public Book() {
-    }
-
     public int getId() {
         return id;
     }
@@ -57,11 +54,12 @@ public class Book {
         this.id = id;
     }
 
+    @NonNull
     public String getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
+    public void setSymbol(@NonNull String symbol) {
         this.symbol = symbol;
     }
 

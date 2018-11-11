@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.tenna.stockmonitor.db.Book;
+import com.example.tenna.stockmonitor.db.BookRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,17 +26,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static com.example.tenna.stockmonitor.Constants.BROADCAST__SERVICE_DATA_UPDATED;
 import static com.example.tenna.stockmonitor.Constants.NOTIFY_ID;
 
 // code modified from https://developer.android.com/guide/components/bound-services#java
 public class StockMonitorService extends Service {
+
+    BookRepository mRepository;
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();
     private AsyncUpdateTask asyncUpdateTask;
     private boolean started = false;
-    private ArrayList<Book> books;
+    private List<Book> books;
 
     public StockMonitorService() {
     }
@@ -43,9 +47,17 @@ public class StockMonitorService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        books = new ArrayList<>();
-        addBook("TSLA", 4);
-        addBook("FB", 4);
+        mRepository = new BookRepository(this.getApplication());
+//        try {
+//            Log.i("Service:", "Getting books from database");
+//            books = mRepository.getAllBooks();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//            Log.i("Service:", "Error getting books from database" + e);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//            Log.i("Service:", "Error getting books from database - Interrupted" + e);
+//        }
     }
 
     @Override
@@ -116,6 +128,7 @@ public class StockMonitorService extends Service {
                             book.setStockSector(stockSector);
 
                             books.add(book);
+                            mRepository.insert(book);
                             broadcastTaskResult("New book added");
                             Log.i("Service", "Updated book: " + book);
                         } catch (JSONException e) {
