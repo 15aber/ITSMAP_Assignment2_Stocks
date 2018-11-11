@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.tenna.stockmonitor.db.Stock;
-
 public class AddStockActivity extends AppCompatActivity {
 
     public static final String EXTRA_STOCK_SYMBOL = "com.example.Assignment2.STOCK_SYMBOL";

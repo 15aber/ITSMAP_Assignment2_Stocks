@@ -64,6 +64,14 @@ public class StockMonitorService extends Service {
         return START_STICKY;
     }
 
+    public void saveBookChanges(int position, double purchasePrice, int numOfStock) {
+        Book book = books.get(position);
+        book.setPurchasePrice(purchasePrice);
+        book.setNumOfStocks(numOfStock);
+        broadcastTaskResult("Book changed");
+        Log.i("Service:", "Purchase price and number of stocks of book:" + book + ", has been changed.");
+    }
+
     /**
      * Class used for the client Binder.  Because we know this service always
      * runs in the same process as its clients, we don't need to deal with IPC.

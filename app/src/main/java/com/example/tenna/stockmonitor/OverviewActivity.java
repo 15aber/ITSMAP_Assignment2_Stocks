@@ -144,6 +144,8 @@ public class OverviewActivity extends AppCompatActivity {
             StockMonitorService.LocalBinder binder = (StockMonitorService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
+            allBooks = mService.getAllBooks();
+            adapter.setBooks(allBooks);
         }
 
         @Override
