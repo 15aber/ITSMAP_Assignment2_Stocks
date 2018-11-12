@@ -23,8 +23,8 @@ public interface BookDao {
     void deleteAll();
 
     //get all books
-    @Query("SELECT * from book_table ORDER BY company_name ASC")
-    List<Book> getAllBooks();
+    @Query("SELECT * FROM book_table ORDER BY company_name ASC")
+    List<Book> getAll();
 
     //get book by id
     @Query("select * from book_table where symbol = :symbol")

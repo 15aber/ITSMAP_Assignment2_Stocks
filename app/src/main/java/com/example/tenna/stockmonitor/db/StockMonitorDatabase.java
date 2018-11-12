@@ -56,11 +56,28 @@ public abstract class StockMonitorDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(final Void... params) {
-            mDao.deleteAll();
-            Book book = new Book("AAPL", 4);
-            mDao.insert(book);
-            book = new Book("FB", 3);
-            mDao.insert(book);
+            if(mDao.getAll().isEmpty()) {
+                Book book = new Book("AAPL", 4);
+                mDao.insert(book);
+                book = new Book("FB", 3);
+                mDao.insert(book);
+                book = new Book("TSLA", 3);
+                mDao.insert(book);
+                book = new Book("ROST", 3);
+                mDao.insert(book);
+                book = new Book("PEP", 3);
+                mDao.insert(book);
+                book = new Book("BIDU", 3);
+                mDao.insert(book);
+                book = new Book("GOOGL", 3);
+                mDao.insert(book);
+                book = new Book("EBAY", 3);
+                mDao.insert(book);
+                book = new Book("NFLX", 3);
+                mDao.insert(book);
+                book = new Book("AMZN", 3);
+                mDao.insert(book);
+            }
             return null;
         }
     }

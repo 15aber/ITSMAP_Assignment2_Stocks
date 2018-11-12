@@ -47,17 +47,17 @@ public class StockMonitorService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        books = new ArrayList<>();
         mRepository = new BookRepository(this.getApplication());
-//        try {
-//            Log.i("Service:", "Getting books from database");
-//            books = mRepository.getAllBooks();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//            Log.i("Service:", "Error getting books from database" + e);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//            Log.i("Service:", "Error getting books from database - Interrupted" + e);
-//        }
+        try {
+            books = mRepository.getAll();
+        } catch (InterruptedException e) {
+            Log.i("Service:", "Error getting books from database" + e);
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            Log.i("Service:", "Error getting books from database - Interrupted" + e);
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -128,7 +128,9 @@ public class StockMonitorService extends Service {
                             book.setStockSector(stockSector);
 
                             books.add(book);
+                            //insert book into database
                             mRepository.insert(book);
+                            //get all books from the database with new book
                             broadcastTaskResult("New book added");
                             Log.i("Service", "Updated book: " + book);
                         } catch (JSONException e) {
@@ -196,6 +198,7 @@ public class StockMonitorService extends Service {
             return null;
         }
     }
+
 
     public void updateAllBooks() {
         Log.i("Service: ", "Updating all books.");

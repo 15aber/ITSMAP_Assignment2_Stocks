@@ -12,26 +12,30 @@ public class BookRepository {
 
     public BookRepository(Application application) {
         StockMonitorDatabase db = StockMonitorDatabase.getDatabase(application);
+        mBookDao = db.bookDao();
+        books = mBookDao.getAll();
     }
 
+    //public List<Book> getAllBooks(){return books;}
+
 //    //Retrieve all books from db
-//    public List<Book> getAllBooks() throws ExecutionException, InterruptedException {
-//        return new getAllAsyncTask(mBookDao).execute().get();
-//    }
-//
-//    private class getAllAsyncTask extends AsyncTask<Void, Void, List<Book>> {
-//
-//        private BookDao mAsyncTaskDao;
-//
-//        getAllAsyncTask(BookDao dao) {
-//            mAsyncTaskDao = dao;
-//        }
-//
-//        @Override
-//        protected List<Book> doInBackground(Void... url) {
-//            return mAsyncTaskDao.getAllBooks();
-//        }
-//    }
+    public List<Book> getAll() throws InterruptedException, ExecutionException {
+        return new getAllAsyncTask(mBookDao).execute().get();
+    }
+
+    private class getAllAsyncTask extends AsyncTask<Void, Void, List<Book>> {
+
+        private BookDao mAsyncTaskDao;
+
+        getAllAsyncTask(BookDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<Book> doInBackground(Void... url) {
+            return mAsyncTaskDao.getAll();
+        }
+    }
 
 
     //Insert book into db
