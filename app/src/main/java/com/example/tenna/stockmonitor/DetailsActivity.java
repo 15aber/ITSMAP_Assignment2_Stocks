@@ -137,10 +137,7 @@ public class DetailsActivity extends AppCompatActivity {
     /** Called when the user taps the Edit button */
     public void goToEdit(View view) {
         Intent intent = new Intent(this, EditActivity.class);
-        intent.putExtra(STOCK_NAME, stockName);
-        intent.putExtra(STOCK_PRICE, stockLatestPrice);
-        intent.putExtra(STOCK_NUM, numOfStock);
-        intent.putExtra(STOCK_SECTOR, stockSector);
+        intent.putExtra(CURRENT_BOOK, currentBookPosition);
         startActivityForResult(intent, EDIT_REQUEST);
     }
 

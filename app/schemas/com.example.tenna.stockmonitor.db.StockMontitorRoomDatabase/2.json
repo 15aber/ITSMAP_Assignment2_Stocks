@@ -1,0 +1,131 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "066e10909174e60c63bee88dd57b75c7",
+    "entities": [
+      {
+        "tableName": "stock_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `stock_name` TEXT NOT NULL, `stock_price` REAL NOT NULL, `stock_price_diff` REAL NOT NULL, `stock_num` INTEGER NOT NULL, `book_symbol` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stockName",
+            "columnName": "stock_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stockPrice",
+            "columnName": "stock_price",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stockPriceDifference",
+            "columnName": "stock_price_diff",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numOfStock",
+            "columnName": "stock_num",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bookSymbol",
+            "columnName": "book_symbol",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "book_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `symbol` TEXT NOT NULL, `company_name` TEXT, `primary_exchange` TEXT, `latest_value` REAL NOT NULL, `latest_timestamp` INTEGER, `stock_sector` TEXT, `num_of_stocks` INTEGER NOT NULL, `purchase_price` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "symbol",
+            "columnName": "symbol",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "companyName",
+            "columnName": "company_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "primaryExchange",
+            "columnName": "primary_exchange",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "latestValue",
+            "columnName": "latest_value",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastestTimestamp",
+            "columnName": "latest_timestamp",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stockSector",
+            "columnName": "stock_sector",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "numOfStocks",
+            "columnName": "num_of_stocks",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "purchasePrice",
+            "columnName": "purchase_price",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"066e10909174e60c63bee88dd57b75c7\")"
+    ]
+  }
+}
