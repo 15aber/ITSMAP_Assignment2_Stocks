@@ -46,6 +46,14 @@ public class StockMonitorService extends Service {
         books = new ArrayList<>();
         addBook("TSLA", 4);
         addBook("FB", 4);
+        addBook("ROST", 2);
+        addBook("PEP", 2);
+        addBook("AAPL", 2);
+        addBook("BIDU", 2);
+        addBook("GOOGL", 4);
+        addBook("EBAY", 3);
+        addBook("NFLX", 3);
+        addBook("AMZN", 4);
     }
 
     @Override
