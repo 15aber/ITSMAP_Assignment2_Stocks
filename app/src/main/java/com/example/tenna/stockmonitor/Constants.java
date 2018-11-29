@@ -14,5 +14,6 @@ public interface Constants {
 
     int DETAILS_REQUEST = 1;
     int EDIT_REQUEST = 2;
+    int NEW_WORD_ACTIVITY_REQUEST_CODE = 3;
 
 }

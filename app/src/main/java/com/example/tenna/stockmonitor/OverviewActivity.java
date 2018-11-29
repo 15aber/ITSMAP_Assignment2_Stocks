@@ -1,5 +1,6 @@
 package com.example.tenna.stockmonitor;
 
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -26,15 +27,13 @@ import java.util.List;
 import static com.example.tenna.stockmonitor.Constants.BROADCAST__SERVICE_DATA_UPDATED;
 import static com.example.tenna.stockmonitor.Constants.CURRENT_BOOK;
 import static com.example.tenna.stockmonitor.Constants.DETAILS_REQUEST;
+import static com.example.tenna.stockmonitor.Constants.NEW_WORD_ACTIVITY_REQUEST_CODE;
 import static com.example.tenna.stockmonitor.Constants.STOCK_NAME;
 import static com.example.tenna.stockmonitor.Constants.STOCK_NUM;
 import static com.example.tenna.stockmonitor.Constants.STOCK_PRICE;
 import static com.example.tenna.stockmonitor.Constants.STOCK_SECTOR;
 
 public class OverviewActivity extends AppCompatActivity {
-
-    public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
-
 
     StockMonitorService mService;
     boolean mBound = false;
@@ -60,13 +59,14 @@ public class OverviewActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(OverviewActivity.this, getString(R.string.clicked_item) + allBooks.get(position).getCompanyName(), Toast.LENGTH_SHORT).show();
+                Log.i("MainActivity:", "Item clicked:" + allBooks.get(position).getCompanyName());
                 goToDetails(position);
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
-                Toast.makeText(OverviewActivity.this, getString(R.string.long_clicked_item) + allBooks.get(position).getCompanyName(), Toast.LENGTH_SHORT).show();
+                Log.i("MainActivity:", "Item long-clicked:" + allBooks.get(position).getCompanyName());
+                goToDetails(position);
             }
         });
 
@@ -171,17 +171,13 @@ public class OverviewActivity extends AppCompatActivity {
 
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             mService.addBook(data.getStringExtra(AddStockActivity.EXTRA_STOCK_SYMBOL),data.getIntExtra(AddStockActivity.EXTRA_STOCK_NUM, 0));
-        } else {
-            Toast.makeText(
-                    getApplicationContext(),
-                    R.string.empty_not_saved,
-                    Toast.LENGTH_LONG).show();
+        } else if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode != RESULT_OK){
+            Toast.makeText(this, R.string.cancelled_string, Toast.LENGTH_SHORT).show();
         }
 
         if (requestCode == DETAILS_REQUEST) {
             if (resultCode == RESULT_OK) {
-                allBooks = mService.getAllBooks();
-                adapter.setBooks(allBooks);
+                Log.d("MainActivity", "Result OK from details activity");
             }
         }
     }

@@ -5,9 +5,11 @@ package com.example.tenna.stockmonitor.db;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,10 @@ public interface BookDao {
     @Query("DELETE FROM book_table")
     void deleteAll();
 
+    //delete book by id
+    @Delete
+    void delete(Book book);
+
     //get all books
     @Query("SELECT * FROM book_table ORDER BY company_name ASC")
     List<Book> getAll();
@@ -29,4 +35,7 @@ public interface BookDao {
     //get book by id
     @Query("select * from book_table where symbol = :symbol")
     Book loadBookById(String symbol);
+
+    @Update
+    void update(Book book);
 }

@@ -118,7 +118,7 @@ public class DetailsActivity extends AppCompatActivity {
             tvPrimaryExchange = findViewById(R.id.tv_primary_exchange);
             tvPrimaryExchange.setText(primaryExchange);
             tvLatestTimestamp = findViewById(R.id.tv_latest_timestamp);
-            tvLatestTimestamp.setText(DateFormat.format("yyyy.MM.dd", lastestTimestamp).toString());
+            tvLatestTimestamp.setText(DateFormat.format("dd/MM/yyyy H:mm:ss", lastestTimestamp).toString());
             tvPurchasePrice = findViewById(R.id.tv_purchase_price);
             tvPurchasePrice.setText(format("%.2f", purchasePrice));
 
@@ -131,6 +131,14 @@ public class DetailsActivity extends AppCompatActivity {
     /** Called when the user taps the Back button */
     public void goToOverview(View view) {
         setResult(RESULT_CANCELED);
+        finish();
+    }
+
+    public void deleteBooksAndReturn(View view) {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(onBackgroundServiceResult);
+        mService.deleteBook(currentBookPosition);
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
         finish();
     }
 

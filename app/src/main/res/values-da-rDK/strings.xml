@@ -38,4 +38,6 @@
     <string name="primary_exchange">"Primær Børs: "</string>
     <string name="latest_timestamp">"Seneste Tidsstempel: "</string>
     <string name="purchase_price">"Købt for: "</string>
+    <string name="unknown_symbol">Ukendt aktiesymbol.</string>
+    <string name="delete">Slet</string>
 </resources>

@@ -58,24 +58,34 @@ public abstract class StockMonitorDatabase extends RoomDatabase {
         protected Void doInBackground(final Void... params) {
             if(mDao.getAll().isEmpty()) {
                 Book book = new Book("AAPL", 4);
+                book.setPurchasePrice(204.47);
                 mDao.insert(book);
                 book = new Book("FB", 3);
+                book.setPurchasePrice(144.96);
                 mDao.insert(book);
                 book = new Book("TSLA", 3);
+                book.setPurchasePrice(350.51);
                 mDao.insert(book);
                 book = new Book("ROST", 3);
+                book.setPurchasePrice(102.76);
                 mDao.insert(book);
                 book = new Book("PEP", 3);
+                book.setPurchasePrice(117.48);
                 mDao.insert(book);
                 book = new Book("BIDU", 3);
+                book.setPurchasePrice(183.75);
                 mDao.insert(book);
                 book = new Book("GOOGL", 3);
+                book.setPurchasePrice(1077.02);
                 mDao.insert(book);
                 book = new Book("EBAY", 3);
+                book.setPurchasePrice(29.66);
                 mDao.insert(book);
                 book = new Book("NFLX", 3);
+                book.setPurchasePrice(303.47);
                 mDao.insert(book);
                 book = new Book("AMZN", 3);
+                book.setPurchasePrice(1712.43);
                 mDao.insert(book);
             }
             return null;

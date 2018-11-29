@@ -29,12 +29,18 @@ public class AddStockActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent replyIntent = new Intent();
-                if (TextUtils.isEmpty(tvAddStockSymbol.getText()) || TextUtils.isEmpty(tvAddStockNum.getText())) {
+                int stockNum;
+                if(tvAddStockNum.getText().toString().isEmpty()){
+                    stockNum = 1;
+                } else {
+                    stockNum = Integer.parseInt(tvAddStockNum.getText().toString());
+                }
+                if (TextUtils.isEmpty(tvAddStockSymbol.getText())) {
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
                     replyIntent.putExtra(EXTRA_STOCK_SYMBOL, tvAddStockSymbol.getText().toString());
-                    replyIntent.putExtra(EXTRA_STOCK_NUM, Integer.parseInt(tvAddStockNum.getText().toString()));
-                    setResult(RESULT_OK, replyIntent);
+                    replyIntent.putExtra(EXTRA_STOCK_NUM, stockNum);
+
                 }
                 finish();
             }

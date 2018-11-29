@@ -37,4 +37,6 @@
     <string name="primary_exchange">Primary Exchange:</string>
     <string name="latest_timestamp">Latest Timestamp</string>
     <string name="purchase_price">Purchase Price</string>
+    <string name="unknown_symbol">The stock symbol is unknown.</string>
+    <string name="delete">Delete</string>
 </resources>

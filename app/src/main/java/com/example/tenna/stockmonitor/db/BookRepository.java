@@ -58,5 +58,44 @@ public class BookRepository {
         }
     }
 
+    //Insert book into db
+    public void update (Book book) {
+        new updateAsyncTask(mBookDao).execute(book);
+    }
+
+    private static class updateAsyncTask extends AsyncTask<Book, Void, Void> {
+
+        private BookDao mAsyncTaskDao;
+
+        updateAsyncTask(BookDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Book... params) {
+            mAsyncTaskDao.update(params[0]);
+            return null;
+        }
+    }
+
+    //Insert book into db
+    public void delete (Book book) {
+        new updateAsyncTask(mBookDao).execute(book);
+    }
+
+    private static class deleteAsyncTask extends AsyncTask<Book, Void, Void> {
+
+        private BookDao mAsyncTaskDao;
+
+        deleteAsyncTask(BookDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Book... params) {
+            mAsyncTaskDao.delete(params[0]);
+            return null;
+        }
+    }
 
 }

@@ -8,10 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.format.DateFormat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -80,14 +83,19 @@ public class StockMonitorService extends Service {
         Book book = books.get(position);
         book.setPurchasePrice(purchasePrice);
         book.setNumOfStocks(numOfStock);
+        mRepository.update(book);
         broadcastTaskResult("Book changed");
         Log.i("Service:", "Purchase price and number of stocks of book:" + book + ", has been changed.");
     }
 
-    /**
-     * Class used for the client Binder.  Because we know this service always
-     * runs in the same process as its clients, we don't need to deal with IPC.
-     */
+    public void deleteBook(int position) {
+        Book book = books.get(position);
+        books.remove(book);
+        mRepository.delete(book);
+        broadcastTaskResult("Book deleted");
+        Log.i("Service:", "Book:" + book + ", has been deleted.");
+    }
+
     public class LocalBinder extends Binder {
         StockMonitorService getService() {
             // Return this instance of LocalService so clients can call public methods
@@ -122,8 +130,8 @@ public class StockMonitorService extends Service {
                             double latestValue = Double.parseDouble(jsonObject.getString("latestPrice"));
                             book.setLatestValue(latestValue);
                             book.setPurchasePrice(latestValue); //set purchase price
-                            Date latestTimestamp = new Date(Long.parseLong(jsonObject.getString("latestUpdate")));
-                            book.setLastestTimestamp(latestTimestamp);
+                            Date latestUpdate = new Date(Long.parseLong(jsonObject.getString("latestUpdate")));
+                            book.setLastestTimestamp(latestUpdate);
                             String stockSector = jsonObject.getString("sector");
                             book.setStockSector(stockSector);
 
@@ -143,6 +151,8 @@ public class StockMonitorService extends Service {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Error", "Book couldn't be added: " + error);
+                        Toast.makeText(getApplicationContext(), R.string.unknown_symbol, Toast.LENGTH_SHORT).show();
+
                     }
                 }
         );
@@ -160,7 +170,7 @@ public class StockMonitorService extends Service {
         // PendingIntent pendingIntent =
         // PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { // Do not do this at home :)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel mChannel = new NotificationChannel("myChannel", "Visible myChannel", NotificationManager.IMPORTANCE_LOW);
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.createNotificationChannel(mChannel);
@@ -169,7 +179,7 @@ public class StockMonitorService extends Service {
         Notification notification =
                 new NotificationCompat.Builder(this, "myChannel")
                         .setContentTitle("StockMonitor")
-                        .setContentText("Fetching Data")
+                        .setContentText("Fetching Data. Last updated: " + DateFormat.format("dd/MM/yyyy H:mm:ss", new Date()).toString())
                         .setSmallIcon(R.mipmap.ic_launcher)
                         //        .setContentIntent(pendingIntent)
                         .setTicker("TickerTock")
@@ -228,6 +238,7 @@ public class StockMonitorService extends Service {
                             String stockSector = jsonObject.getString("sector");
                             book.setStockSector(stockSector);
 
+                            mRepository.update(book);
                             Log.i("Service", "Updated book: " + book);
                             broadcastTaskResult("Book updated");
                         } catch (JSONException e) {
